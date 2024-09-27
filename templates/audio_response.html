@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resposta em Áudio</title>
+  </head>
+  <body>
+    <h1>Resultado da Análise da Planilha</h1>
+    <audio controls>
+      <source src="{{ url_for('download_audio_response') }}" type="audio/mpeg">
+      Seu navegador não suporta a tag de áudio.
+    </audio>
+    <a href="{{ url_for('index') }}">Analisar outra planilha</a>
+  </body>
+</html>

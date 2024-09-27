@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatBot</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            color: #333;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 50px;
+            background-color: #fff;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+        }
+
+        body.dark-mode header {
+            background-color: #1e1e1e;
+        }
+
+        header .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #12a27f;
+        }
+
+        body.dark-mode nav a {
+            color: #ccc;
+        }
+
+        .login-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .login-buttons a {
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: bold;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .login-buttons .login,
+        .login-buttons .signup {
+            background-color: #12a27f;
+            color: #fff;
+        }
+
+        body.dark-mode .login-buttons .login,
+        body.dark-mode .login-buttons .signup {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .login-buttons .logout {
+            background-color: #ff4c4c; /* Cor vermelha para o botão de Log Off */
+            color: #fff;
+        }
+
+        .login-buttons .logout:hover {
+            background-color: #ff3333; /* Cor vermelha mais escura no hover */
+        }
+
+        .hero-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 80vh;
+            text-align: center;
+            background-color: #fff;
+            transition: background-color 0.3s;
+        }
+
+        body.dark-mode .hero-section {
+            background-color: #1e1e1e;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .hero-content h1 {
+            font-size: 48px;
+            color: #333;
+            transition: color 0.3s;
+        }
+
+        body.dark-mode .hero-content h1 {
+            color: #fff;
+        }
+
+        .hero-content p {
+            color: #666;
+            margin: 20px 0;
+            transition: color 0.3s;
+        }
+
+        body.dark-mode .hero-content p {
+            color: #ccc;
+        }
+
+        .hero-content .start-chat {
+            background-color: #12a27f;
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-transform: uppercase;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .hero-content .start-chat:hover {
+            background-color: #12a27f;
+        }
+
+        body.dark-mode .hero-content .start-chat {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .chatbot-image {
+            background-color: #12a27f;
+            border-radius: 50%;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: background-color 0.3s;
+        }
+
+        body.dark-mode .chatbot-image {
+            background-color: #333;
+        }
+
+        .chatbot-image img {
+            width: 200px;
+            animation: moveHorizontally 3s infinite ease-in-out;
+        }
+
+        .chatbot-image .speech-bubble {
+            position: absolute;
+            top: 30%;
+            right: -20px;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode .chatbot-image .speech-bubble {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .dots div {
+            width: 10px;
+            height: 10px;
+            background-color: #e6e6e6;
+            border-radius: 50%;
+            margin: 0 5px;
+            transition: background-color 0.3s;
+        }
+
+        .dots div.active {
+            background-color: #12a27f;
+        }
+
+        body.dark-mode .dots div {
+            background-color: #555;
+        }
+
+        /* Animação para mover a imagem horizontalmente */
+        @keyframes moveHorizontally {
+            0% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(50px);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="{{ url_for('static', filename='img/logo-horizontal-verde-vetorizada.png') }}" alt="Logo Easy Market" style="height: 60px;">
+        </div>
+        
+        <nav>
+            <a href="#">início</a>
+            <a href="#">menu</a>
+            <a href="#">fale conosco</a>
+        </nav>
+        <div class="login-buttons">
+            {% if session.get('user_id') %}
+                <a href="{{ url_for('logout') }}" class="logout">Log Off</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="login">Log In</a>
+                <a href="{{ url_for('signup') }}" class="signup">Sign Up</a>
+            {% endif %}
+        </div>
+        <button onclick="toggleDarkMode()" style="background: none; border: none; cursor: pointer;">
+            <i id="dark-mode-icon" class="fas fa-moon" style="font-size: 24px;"></i>
+        </button>
+        
+    </header>
+
+    <section class="hero-section">
+        <div class="hero-content">
+            <div class="chatbot-image">
+                <img src="{{ url_for('static', filename='img/chatbot.png') }}" alt="Chatbot Image">
+                <div class="speech-bubble">Olá!</div>
+            </div>
+            <h1>Seja bem vindo (a)!</h1>
+            <p>Olá! Eu sou a Isa, a Assistente Virtual da Easy Market BR. Estou aqui para ajudar você a extrair o máximo de suas planilhas. Conte comigo para simplificar suas análises e otimizar seu tempo!</p>
+            {% if session.get('user_id') %}
+                <a href="/chat" class="start-chat">Iniciar Chat</a>
+            {% else %}
+                <a href="#" class="start-chat" style="opacity: 0.5; cursor: not-allowed;">Iniciar Chat</a>
+            {% endif %}
+            <div class="dots">
+                <div class="active"></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+
+            // Alterna o ícone entre lua (modo escuro) e sol (modo claro)
+            const icon = document.getElementById('dark-mode-icon');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        }
+    </script>
+</body>
+</html>
+
